@@ -125,6 +125,4 @@ mvn clean package
   - `java -version`
   - `mvn -version`
 
-## Current Project Status
 
-This README now reflects the actual current project structure and functions, including the generated `.gitignore` and `db.properties.example` files, and the servlet/JSP-based admin/student workflow.
