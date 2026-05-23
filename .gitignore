@@ -1,0 +1,18 @@
+# Database credentials - NEVER upload this
+src/main/resources/db.properties
+
+# Compiled output
+target/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.class
+
+# WAR files
+*.war
+
+# OS files
+.DS_Store
+Thumbs.db
