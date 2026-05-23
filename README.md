@@ -1,180 +1,130 @@
-# Student Result Management System - Complete Project
+# Student Result Management System
 
-## ✅ Project Generated Successfully
+A Jakarta Servlet + JSP web application for managing students, subjects, marks, and results with role-based admin/student access.
 
-All files have been created and are production-ready with zero placeholders or TODOs.
+## Current Project Contents
 
-## 📋 What You Have
+### Root Files
+- `.gitignore` — ignores `target/`, IDE files, `.vscode/`, and `src/main/resources/db.properties`
+- `pom.xml` — Maven build configuration
+- `GenerateHash.java` — utility to generate BCrypt password hashes
+- `student_db.sql` — database schema and seed data for MySQL
+- `README.md` — project documentation
 
-### Core Components Generated:
-1. ✅ **pom.xml** - Maven configuration with all required dependencies
-2. ✅ **schema.sql** - Complete database schema with admin user (BCrypt hash included)
-3. ✅ **GenerateHash.java** - Standalone utility to generate BCrypt hashes for any password
-4. ✅ **7 Model Classes** - Person, Student, Admin, Subject, Mark, Result, User
-5. ✅ **4 DAO Classes** - DBConnection (singleton), UserDAO, StudentDAO, SubjectDAO, MarksDAO
-6. ✅ **3 Utility Classes** - GradeCalculator, PasswordUtil, ExportUtil
-7. ✅ **1 Listener** - AppStartupListener (tests DB connection on startup)
-8. ✅ **7 Servlets** - LoginServlet, LogoutServlet, StudentServlet, SubjectServlet, MarksServlet, ResultServlet, SearchServlet, ExportServlet, ChangePasswordServlet
-9. ✅ **1 Filter** - AuthFilter (enforces authentication on protected URLs)
-10. ✅ **10 JSP Pages** - Login, Error, Admin Dashboard, Student Dashboard + all CRUD pages
-11. ✅ **CSS & JS** - Fully styled responsive UI + form validation
+### Config Files
+- `src/main/resources/db.properties.example` — database connection example
+- `src/main/resources/db.properties` — actual database connection file (should be created locally and kept out of source control)
 
-## 🚀 Pre-Deployment Checklist
+### Java Source
+- `src/main/java/com/srms/dao/`
+  - `DBConnection.java`
+  - `UserDAO.java`
+  - `StudentDAO.java`
+  - `SubjectDAO.java`
+  - `MarksDAO.java`
+- `src/main/java/com/srms/servlet/`
+  - `LoginServlet.java`
+  - `LogoutServlet.java`
+  - `ChangePasswordServlet.java`
+  - `DashboardServlet.java`
+  - `StudentDashboardServlet.java`
+  - `ResultServlet.java`
+  - `StudentResultServlet.java`
+  - `StudentServlet.java`
+  - `SubjectServlet.java`
+  - `MarksServlet.java`
+  - `SearchServlet.java`
+  - `ExportServlet.java`
+- `src/main/java/com/srms/filter/AuthFilter.java`
+- `src/main/java/com/srms/listener/AppStartupListener.java`
+- `src/main/java/com/srms/util/`
+  - `GradeCalculator.java`
+  - `PasswordUtil.java`
+  - `ExportUtil.java`
+- `src/main/java/com/srms/model/`
+  - `Admin.java`
+  - `Student.java`
+  - `Subject.java`
+  - `Mark.java`
+  - `Result.java`
+  - `User.java`
+  - `Person.java`
+  - `Reportable.java`
 
-### 1. CRITICAL: Verify BCrypt Hash in schema.sql
-The admin password hash is ALREADY in schema.sql:
-```sql
-INSERT INTO users (username, password_hash, role)
-VALUES ('admin', '$2a$10$8K1p/a0dR6XXwpn81Ps3j.YpZDQE7CkPdFSFmJdZLcXcHxIXmu3Gy', 'admin');
-```
-This hash is for password: **Admin@1234**
+### Web Files
+- `src/main/webapp/WEB-INF/web.xml`
+- JSP views in `src/main/webapp/WEB-INF/views/`
+  - `login.jsp`
+  - `error.jsp`
+  - `admin/` pages
+  - `student/` pages
+- Static resources in `src/main/webapp/resources/`
+  - `css/style.css`
+  - `js/validation.js`
 
-**If you need to generate a new hash:**
-1. Compile GenerateHash.java (requires jbcrypt.jar in classpath)
-2. Run: `java GenerateHash YourPassword`
-3. Copy the output hash and update schema.sql
+## Key Application Features
 
-### 2. Database Setup
+- Role-based login for admin and student users
+- Servlet-based routing and protected pages using `AuthFilter`
+- Admin CRUD for students, subjects, and marks
+- Student result dashboard and view
+- Password change support for both admin and students
+- BCrypt password hashing with `jBCrypt`
+- Database-backed login and authorization
+- JSP UI with form validation and sidebar navigation
+- Export support via `ExportServlet`
+
+## Setup Instructions
+
+1. Copy the example DB file:
+
 ```bash
-# Open MySQL and run:
-mysql -u root -p1234 < schema.sql
+cp src/main/resources/db.properties.example src/main/resources/db.properties
 ```
 
-Verifies when `student_db` is created and admin user exists.
+2. Edit `src/main/resources/db.properties` with your MySQL settings:
 
-### 3. Build the Project
+```properties
+db.url=jdbc:mysql://localhost:3306/student_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+db.user=root
+db.password=YOUR_PASSWORD_HERE
+db.driver=com.mysql.cj.jdbc.Driver
+```
+
+3. Create the database from `student_db.sql`:
+
 ```bash
-cd "c:\Users\nishi\OneDrive\Documents\dharni_doc\Projects\Student_Result_Management_System"
+mysql -u root -p < student_db.sql
+```
+
+4. Build the application:
+
+```bash
 mvn clean package
 ```
 
-This creates: `target/student-result-management.war`
+5. Deploy the generated WAR from `target/` to Tomcat 10.x or later.
 
-### 4. Deploy to Tomcat 10.x
-- Copy `target/student-result-management.war` → `$CATALINA_HOME/webapps/`
-- OR use: `mvn tomcat7:deploy`
+## Notes
 
-### 5. Verify Startup
-After Tomcat starts:
-1. Check Tomcat logs for: **"[STARTUP] Database connection OK"**
-2. If you see **"[STARTUP] DATABASE CONNECTION FAILED"** → copy the error message and report it
+- `src/main/resources/db.properties` is intentionally excluded by `.gitignore`.
+- `db.properties.example` is safe to keep in source control.
+- Use `GenerateHash.java` when you need to create new BCrypt password hashes.
 
-## 🔐 Default Credentials
-- **Username:** admin
-- **Password:** Admin@1234
+## Recommended URLs
 
-(Change immediately after first login via Settings → Change Password)
+- Login: `http://localhost:8080/student-result-management/login`
+- Admin Dashboard: `http://localhost:8080/student-result-management/admin/dashboard`
+- Student Dashboard: `http://localhost:8080/student-result-management/student/dashboard`
 
-## 📱 Application URLs
-- **Login:** `http://localhost:8080/student-result-management/login`
-- **Admin Dashboard:** `http://localhost:8080/student-result-management/admin/dashboard`
-- **Student Dashboard:** `http://localhost:8080/student-result-management/student/dashboard`
+## Troubleshooting
 
-## 🔑 Key Features Implemented
+- If the app cannot connect to the database, verify `db.properties` values and MySQL availability.
+- If login fails, ensure user records exist in `student_db.sql` seed data.
+- If the build fails, check your Java and Maven installations:
+  - `java -version`
+  - `mvn -version`
 
-✅ **Mandatory Error Visibility:**
-- Red banner for database connection failures
-- Error page with stack trace (collapsible)
-- Session timeout messages
-- All CRUD operation errors displayed on screen
+## Current Project Status
 
-✅ **Database Connection Testing:**
-- AppStartupListener tests connection on Tomcat startup
-- Error attribute set in application context if connection fails
-- All JSP pages check for dbError banner
-
-✅ **Authentication & Authorization:**
-- Single login page for both Admin and Student (role determined from DB)
-- Session-based authentication with 30-minute timeout
-- AuthFilter enforces role-based access control
-- Change password functionality for both roles
-
-✅ **Complete CRUD Operations:**
-- Students: Add, Edit, Delete, View
-- Subjects: Add, Edit, Delete
-- Marks: Assign, View by Student
-- Results: View with calculated percentage, grade, pass/fail
-
-✅ **Data Security:**
-- All passwords stored as BCrypt hashes (never plain text)
-- PreparedStatements for all queries (no SQL injection vulnerabilities)
-- No hardcoded DB credentials in Java (all in db.properties)
-
-✅ **Responsive UI:**
-- Mobile-friendly design
-- Sidebar navigation
-- Data tables with sorting-ready structure
-- Form validation (client + server-side)
-
-## 📁 Project Structure
-```
-Student_Result_Management_System/
-├── pom.xml
-├── schema.sql
-├── GenerateHash.java (standalone utility)
-├── src/main/
-│   ├── java/com/srms/
-│   │   ├── model/ (7 classes)
-│   │   ├── dao/ (5 classes)
-│   │   ├── servlet/ (9 classes)
-│   │   ├── filter/ (1 class)
-│   │   ├── listener/ (1 class)
-│   │   ├── util/ (3 classes)
-│   │   └── exception/ (1 class)
-│   ├── resources/
-│   │   └── db.properties
-│   └── webapp/
-│       ├── WEB-INF/
-│       │   ├── web.xml
-│       │   └── views/ (10 JSP files)
-│       └── resources/
-│           ├── css/style.css
-│           └── js/validation.js
-```
-
-## ⚠️ Important Notes
-
-1. **db.properties configured for:**
-   - Host: localhost:3306
-   - Database: student_db
-   - User: root
-   - Password: 1234
-   - Modify if your MySQL setup is different
-
-2. **Java Version:** Compiled for Java 17+
-
-3. **Tomcat Version:** Requires Jakarta EE 6.0+ (Tomcat 10.x or later)
-
-4. **MySQL:** Version 8.0+
-
-## 🐛 Troubleshooting
-
-**If Maven build fails:**
-- Ensure Java 17+ is installed: `java -version`
-- Check Maven is installed: `mvn -version`
-- Run: `mvn clean install` first, then `mvn clean package`
-
-**If Tomcat won't start with the app:**
-- Check Tomcat logs: `$CATALINA_HOME/logs/catalina.out`
-- Verify MySQL is running: `mysql -u root -p1234`
-- Check db.properties settings match your MySQL configuration
-
-**If login fails:**
-- Verify admin user inserted: `SELECT * FROM student_db.users;`
-- Check BCrypt hash starts with `$2a$`
-- Try password: Admin@1234 (exactly as shown with capital A)
-
-## ✨ What's Already Implemented
-
-Everything in the requirements has been implemented:
-- ✅ No TODO comments or placeholders
-- ✅ All code compiles without errors
-- ✅ Frontend and backend fully integrated
-- ✅ Production-ready error handling
-- ✅ Complete authentication & authorization
-- ✅ All CRUD operations
-- ✅ Result calculation and grading
-- ✅ CSV export functionality
-- ✅ Responsive design
-
-**Ready to deploy!**
+This README now reflects the actual current project structure and functions, including the generated `.gitignore` and `db.properties.example` files, and the servlet/JSP-based admin/student workflow.
